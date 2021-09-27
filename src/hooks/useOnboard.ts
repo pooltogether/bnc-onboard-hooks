@@ -1,6 +1,7 @@
 import Cookies from 'js-cookie'
 import { useCallback } from 'react'
 import { useAtom } from 'jotai'
+
 import {
   addressAtom,
   balanceAtom,

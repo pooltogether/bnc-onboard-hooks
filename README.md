@@ -1,6 +1,6 @@
 # PoolTogether hooks
 
-A collection of various useful hooks used across the PoolTogether applications.
+Hooks for adding Onboard.js to PoolTogether dapps.
 
 ## NOTE
 
