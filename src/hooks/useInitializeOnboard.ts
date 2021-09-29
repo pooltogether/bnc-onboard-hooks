@@ -220,7 +220,8 @@ const initOnboard = (subscriptions, walletConfig) => {
     {
       walletName: 'web3Wallet',
       preferred: true
-    }
+    },
+    { walletName: 'valora', preferred: true, ...walletConnectOptions }
   ]
 
   return onboard({
