@@ -172,6 +172,7 @@ const initOnboard = (subscriptions, walletConfig) => {
       preferred: true,
       rpcUrl: RPC_URL
     },
+    { walletName: 'valora', preferred: true, ...walletConnectOptions },
     {
       walletName: 'dcent',
       preferred: true
@@ -220,8 +221,7 @@ const initOnboard = (subscriptions, walletConfig) => {
     {
       walletName: 'web3Wallet',
       preferred: true
-    },
-    { walletName: 'valora', preferred: true, ...walletConnectOptions }
+    }
   ]
 
   return onboard({

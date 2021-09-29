@@ -1,6 +1,6 @@
 {
   "name": "@pooltogether/bnc-onboard-hooks",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Hooks for adding Onboard.js to PoolTogether dapps",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
