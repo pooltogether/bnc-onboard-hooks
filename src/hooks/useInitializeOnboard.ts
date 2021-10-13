@@ -1,9 +1,9 @@
 import Cookies from 'js-cookie'
+import Onboard from '@pooltogether/bnc-onboard'
 import { useCallback, useEffect } from 'react'
 import { atom, useAtom } from 'jotai'
 import { ethers } from 'ethers'
 import { API, Wallet } from '@pooltogether/bnc-onboard/dist/src/interfaces'
-import Onboard from '@pooltogether/bnc-onboard'
 import { getNetworkNameAliasByChainId, getChainIdByAlias } from '@pooltogether/utilities'
 
 import { SELECTED_WALLET_COOKIE_KEY } from '../constants'
@@ -21,10 +21,11 @@ export const walletAtom = atom<Wallet>(undefined as Wallet)
 
 export const useInitializeOnboard = (
   config: {
+    defaultNetworkName: string
     infuraId?: string
     fortmaticKey?: string
     portisKey?: string
-    defaultNetworkName: string
+    customWalletsConfig?: object
   } = { defaultNetworkName: 'mainnet' }
 ) => {
   const [onboard, setOnboard] = useAtom(onboardAtom)
@@ -113,7 +114,8 @@ const initOnboard = (subscriptions, walletConfig) => {
     infuraId: INFURA_ID,
     fortmaticKey: FORTMATIC_KEY,
     portisKey: PORTIS_KEY,
-    defaultNetworkName
+    defaultNetworkName,
+    customWalletsConfig
   } = walletConfig
 
   const defaultNetworkId = getChainIdByAlias(defaultNetworkName)
@@ -133,7 +135,7 @@ const initOnboard = (subscriptions, walletConfig) => {
     bridge: 'https://pooltogether.bridge.walletconnect.org/'
   }
 
-  const WALLETS_CONFIG = [
+  const DEFAULT_WALLETS_CONFIG = [
     { walletName: 'metamask', preferred: true },
     {
       walletName: 'walletConnect',
@@ -230,7 +232,7 @@ const initOnboard = (subscriptions, walletConfig) => {
     darkMode: true,
     subscriptions,
     walletSelect: {
-      wallets: WALLETS_CONFIG
+      wallets: customWalletsConfig || DEFAULT_WALLETS_CONFIG
     },
     walletCheck: [
       { checkName: 'derivationPath' },
