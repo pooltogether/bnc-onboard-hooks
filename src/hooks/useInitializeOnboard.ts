@@ -43,9 +43,17 @@ export const useInitializeOnboard = (
     return initOnboard(
       {
         address: setAddress,
-        network: setNetwork,
+        network: (network) => {
+          setNetwork(network)
+        },
         balance: setBalance,
         wallet: (wallet) => {
+          // NOTE: Remove depricated listener so MetaMask can switch to Avalanche
+          if (wallet.name === 'MetaMask') {
+            const ethereum = (window as any)?.ethereum
+            ethereum?.removeAllListeners(['networkChanged'])
+          }
+
           if (wallet.provider) {
             setWallet(wallet)
             setProvider(new ethers.providers.Web3Provider(wallet.provider, 'any'))
@@ -131,7 +139,7 @@ const initOnboard = (subscriptions, walletConfig) => {
       42220: 'https://forno.celo.org',
       44787: 'https://alfajores-forno.celo-testnet.org',
       62320: 'https://baklava-forno.celo-testnet.org',
-      1: defaultNetworkId,
+      1: RPC_URL,
       137: 'https://polygon-rpc.com'
     },
     bridge: 'https://pooltogether.bridge.walletconnect.org/'
