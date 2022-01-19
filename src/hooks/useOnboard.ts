@@ -9,7 +9,8 @@ import {
   onboardAtom,
   providerAtom,
   networkNameAtom,
-  walletAtom
+  walletAtom,
+  sentryAtom
 } from './useInitializeOnboard'
 import { SELECTED_WALLET_COOKIE_KEY } from '../constants'
 import { useCookieOptions } from './useCookieOptions'
@@ -22,6 +23,7 @@ export const useOnboard = () => {
   const [provider] = useAtom(providerAtom)
   const [balance] = useAtom(balanceAtom)
   const [wallet] = useAtom(walletAtom)
+  const [sentry] = useAtom(sentryAtom)
 
   const cookieOptions = useCookieOptions()
 
@@ -42,6 +44,14 @@ export const useOnboard = () => {
         }
 
         trackWalletConnectedGoal(onboard)
+
+        if (sentry.sentryLog) {
+          const _wallet = onboard.getState().wallet
+          sentry.sentryLog(
+            'Depositor saw terms & disclaimer, connected wallet manually',
+            _wallet?.name
+          )
+        }
 
         postSignInCallback?.()
       } catch (e) {

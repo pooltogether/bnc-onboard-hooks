@@ -18,6 +18,7 @@ export const providerAtom = atom<ethers.providers.Web3Provider>(
 )
 export const balanceAtom = atom<string>(undefined as string)
 export const walletAtom = atom<Wallet>(undefined as Wallet)
+export const sentryAtom = atom({ sentryLog: (msg: string, walletName?: string) => {} })
 
 export const useInitializeOnboard = (
   config: {
@@ -26,6 +27,7 @@ export const useInitializeOnboard = (
     fortmaticKey?: string
     portisKey?: string
     customWalletsConfig?: object
+    sentryLog?: (msg: string, walletName?: string) => {}
   } = { defaultNetworkName: 'mainnet' }
 ) => {
   const [onboard, setOnboard] = useAtom(onboardAtom)
@@ -34,12 +36,15 @@ export const useInitializeOnboard = (
   const [provider, setProvider] = useAtom(providerAtom)
   const [balance, setBalance] = useAtom(balanceAtom)
   const [wallet, setWallet] = useAtom(walletAtom)
+  const [sentry, setSentry] = useAtom(sentryAtom)
 
   const cookieOptions = useCookieOptions()
 
   // Initialize Onboard
 
   const getOnboard = async (): Promise<API> => {
+    setSentry({ sentryLog: config.sentryLog })
+
     return initOnboard(
       {
         address: setAddress,
@@ -48,7 +53,7 @@ export const useInitializeOnboard = (
         },
         balance: setBalance,
         wallet: (wallet) => {
-          // NOTE: Remove depricated listener so MetaMask can switch to Avalanche
+          // NOTE: Remove deprecated listener so MetaMask can switch to Avalanche
           if (wallet.name === 'MetaMask') {
             const ethereum = (window as any)?.ethereum
             ethereum?.removeAllListeners(['networkChanged'])
@@ -96,6 +101,7 @@ export const useInitializeOnboard = (
     try {
       onboard.walletReset()
       Cookies.remove(SELECTED_WALLET_COOKIE_KEY, cookieOptions)
+      config.sentryLog('disconnectWallet2')
     } catch (e) {
       console.error(e)
       console.warn("Onboard isn't ready!")
