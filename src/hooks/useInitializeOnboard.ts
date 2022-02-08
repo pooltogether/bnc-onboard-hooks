@@ -101,7 +101,10 @@ export const useInitializeOnboard = (
     try {
       onboard.walletReset()
       Cookies.remove(SELECTED_WALLET_COOKIE_KEY, cookieOptions)
-      config.sentryLog('disconnectWallet2')
+
+      if (config.sentryLog) {
+        config.sentryLog('disconnectWallet2')
+      }
     } catch (e) {
       console.error(e)
       console.warn("Onboard isn't ready!")
