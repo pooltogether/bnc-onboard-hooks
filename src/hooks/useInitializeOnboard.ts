@@ -149,7 +149,8 @@ const initOnboard = (subscriptions, walletConfig) => {
       44787: 'https://alfajores-forno.celo-testnet.org',
       62320: 'https://baklava-forno.celo-testnet.org',
       1: RPC_URL,
-      137: 'https://polygon-rpc.com'
+      137: 'https://polygon-rpc.com',
+      100: 'https://rpc.gnosischain.com'
     },
     bridge: 'https://pooltogether.bridge.walletconnect.org/'
   }
